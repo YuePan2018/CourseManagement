@@ -67,6 +67,7 @@
 	    ele.className = newClass.replace(/^\s+|\s+$/g, '');
 	  }
 	}
+	// login action
 	document.querySelector(".login-button").onclick = function(){
 			var username = $("#username").val();
 			var password = $("#password").val();
@@ -89,7 +90,7 @@
 				dataType:'json',
 				success:function(data){
 					if(data.type == 'success'){
-						window.parent.location = 'index';
+						window.parent.location = 'super_admin';
 					}else{
 						removeClass(document.querySelector(".login"), "active");
 						removeClass(document.querySelector(".sk-rotating-plane"), "active");

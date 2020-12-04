@@ -41,10 +41,9 @@
 	
 	<!-- interceptors-->
 		<mvc:interceptors>
-			<!-- back-end interceptor -->
+			<!-- intercept all url except login and front-end static resources -->
 			<mvc:interceptor>
-				<mvc:mapping path="/admin/**"/>
-				<mvc:mapping path="/system/*"/>
+				<mvc:mapping path="/**"/>
 				<mvc:exclude-mapping path="/system/login"/>
 				<mvc:exclude-mapping path="/resources/**"/>
 				<bean class="com.yue.interceptor.admin.LoginInterceptor"></bean>

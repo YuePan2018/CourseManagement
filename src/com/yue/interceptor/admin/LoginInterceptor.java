@@ -38,27 +38,21 @@ public class LoginInterceptor implements HandlerInterceptor {
 		Object admin = request.getSession().getAttribute("admin");
 		// if not login (no "admin" in session)
 		if(admin == null){
-			System.out.println("Login Interceptor: user not logged in");
+			System.out.println("Login Interceptor: user not logged in,");
 			System.out.println("when access： " + requestURI);
 			//if request is ajax, return json of error
 			String header = request.getHeader("X-Requested-With");
 			if("XMLHttpRequest".equals(header)){
 				Map<String, String> ret = new HashMap<String, String>();
 				ret.put("type", "error");
-				ret.put("msg", "登录会话超时或还未登录，请重新登录!");
+				ret.put("msg", "please re-login");
 				response.getWriter().write(JSONObject.fromObject(ret).toString());
 				return false;
 			}
 			// if request is not ajax, redirect to login page
 			response.sendRedirect(request.getServletContext().getContextPath() + "/system/login");
 			return false;
-		}
-		/*//获取菜单id
-		String mid = request.getParameter("_mid");
-		if(!StringUtils.isEmpty(mid)){
-			List<Menu> allThirdMenu = MenuUtil.getAllThirdMenu((List<Menu>)request.getSession().getAttribute("userMenus"), Long.valueOf(mid));
-			request.setAttribute("thirdMenuList", allThirdMenu);
-		}*/		
+		}	
 		return true;
 	}
 

@@ -28,15 +28,15 @@ public class SystemController {
 	@Autowired
 	private UserService userService;
 	
-	// index page (from login page)
-	@RequestMapping(value= "/index",method=RequestMethod.GET)
-	public ModelAndView index(ModelAndView model) {
-		model.setViewName("system/index");
+	// super admin page (from login page)
+	@RequestMapping(value= "/super_admin",method=RequestMethod.GET)
+	public ModelAndView superAdmin(ModelAndView model) {
+		model.setViewName("system/super_admin");
 		model.addObject("name","data from MyBatis");
 		return model;
 	}
 
-	// welcome page (of index page)
+	// welcome page
 	@RequestMapping(value="/welcome",method=RequestMethod.GET)
 	public ModelAndView welcome(ModelAndView model){
 		model.setViewName("system/welcome");
