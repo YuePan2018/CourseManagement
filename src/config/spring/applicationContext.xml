@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+  	 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+ 	 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+	<!-- scan annotation -->
+	<context:component-scan base-package="com.yue">
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Component" />
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Repository" />
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Service" />
+	</context:component-scan>
+
+	<!-- load Data Base property file: db.properties -->
+	<context:property-placeholder location="classpath:config/db.properties" />
+
+	<!-- configure data source -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="${datasource.connection.driver_class}"/>
+		<property name="jdbcUrl" value="${datasource.connection.url}"/>
+		<property name="user" value="${datasource.connection.username}"/>
+		<property name="password" value="${datasource.connection.password}"/>
+		<property name="minPoolSize" value="${datasource.connection.minPoolSize}"/>
+		<property name="maxPoolSize" value="${datasource.connection.maxPoolSize}"/>
+		<property name="maxIdleTime" value="${datasource.connection.maxIdleTime}"/>
+		<property name="acquireIncrement" value="${datasource.connection.acquireIncrement}"/>
+		<property name="maxStatements" value="${datasource.connection.maxStatements}"/>
+		<property name="maxStatementsPerConnection"
+				  value="${datasource.connection.maxStatementsPerConnection}"/>
+		<property name="initialPoolSize" value="${datasource.connection.initialPoolSize}"/>
+		<property name="idleConnectionTestPeriod"
+				  value="${datasource.connection.idleConnectionTestPeriod}"/>
+		<property name="acquireRetryAttempts"
+				  value="${datasource.connection.acquireRetryAttempts}"/>
+		<property name="breakAfterAcquireFailure"
+				  value="${datasource.connection.breakAfterAcquireFailure}"/>
+		<property name="testConnectionOnCheckout"
+				  value="${datasource.connection.testConnectionOnCheckout}"/>
+		<property name="checkoutTimeout" value="${datasource.connection.checkoutTimeout}"/>
+		<property name="testConnectionOnCheckin"
+				  value="${datasource.connection.testConnectionOnCheckin}"/>
+		<property name="automaticTestTable" value="${datasource.connection.automaticTestTable}"/>
+		<property name="acquireRetryDelay" value="${datasource.connection.acquireRetryDelay}"/>
+		<property name="unreturnedConnectionTimeout" value="${datasource.connection.unreturnedConnectionTimeout}"/>
+		<property name="maxIdleTimeExcessConnections" value="${datasource.connection.maxIdleTimeExcessConnections}"/>
+		<property name="maxConnectionAge" value="${datasource.connection.maxConnectionAge}"/>
+
+	</bean>
+
+	<!-- transactionManager -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<!-- start transactionManager -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+
+	<!-- MyBatis: dataSource, entity, mapper -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<!-- scan entity-->
+		<property name="typeAliasesPackage" value="com.yue.entity"></property>
+		<!-- scan mapper -->
+		<property name="mapperLocations" value="classpath:config/mybatis/mapper/admin/*.xml"></property>
+	</bean>
+
+	<!-- dao package -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.yue.dao" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+	</bean>
+
+	<bean id="gson" class="com.google.gson.Gson" scope="prototype"></bean>
+
+</beans>
