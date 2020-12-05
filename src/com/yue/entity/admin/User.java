@@ -7,11 +7,10 @@ public class User {
 	private Long id;
 	private String username;
 	private String password;
-	//private Long roleId;
-	private String photo;	//address of photo
-	private int sex;	// 0 is private, 1 is male, 2 is female
-	private Integer age;
-	private String address;
+	//private String photo;	//address of photo
+	//private int sex;	// 0 is private, 1 is male, 2 is female
+	//private Integer age;
+	//private String address;
 	public Long getId() {
 		return id;
 	}
@@ -30,7 +29,7 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getPhoto() {
+	/*public String getPhoto() {
 		return photo;
 	}
 	public void setPhoto(String photo) {
@@ -53,7 +52,7 @@ public class User {
 	}
 	public void setAddress(String address) {
 		this.address = address;
-	}
+	}*/
 	/*public Long getRoleId() {
 		return roleId;
 	}

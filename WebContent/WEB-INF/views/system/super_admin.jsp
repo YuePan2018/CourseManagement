@@ -15,9 +15,9 @@
 	<script type="text/javascript" src='../resources/admin/easyui/js/outlook2.js'> </script>
     <script type="text/javascript">
 	 var _menus = {"menus":[
-						{"menuid":"1","icon":"","menuname":"user管理",
+						{"menuid":"1","icon":"","menuname":"User Management",
 							"menus":[
-									{"menuid":"11","menuname":"user列表","icon":"icon-exam","url":"../user/list"}
+									{"menuid":"11","menuname":"user list","icon":"icon-exam","url":"../user/list"}
 								]
 						},
 						{"menuid":"2","icon":"","menuname":"学生信息管理",
