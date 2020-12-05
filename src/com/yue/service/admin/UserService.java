@@ -7,4 +7,5 @@ import com.yue.entity.admin.User;
 @Service
 public interface UserService {
 	public User findByUsername(String username);
+	public int add(User user);
 }

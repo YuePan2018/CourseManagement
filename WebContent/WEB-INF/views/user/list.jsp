@@ -140,7 +140,7 @@
 										//reload datagrid
 							  			$('#dataList').datagrid("reload");										
 									} else{
-										$.messager.alert("message","adding fail","warning");
+										$.messager.alert("message",data.msg,"warning");
 										return;
 									}
 								}
