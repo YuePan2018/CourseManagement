@@ -34,7 +34,7 @@
 	        columns: [[  
 				{field:'chk',checkbox: true,width:50},
  		        {field:'id',title:'ID',width:50, sortable: true},   
- 		        {field:'username',title:'username',width:150},
+ 		        {field:'username',title:'username',width:150, sortable: true},
  		        {field:'password',title:'password',width:100},
 	 		]], 
 	        toolbar: "#toolbar"
@@ -70,28 +70,26 @@
         	if(selectLength == 0){
             	$.messager.alert("message", "please select rows", "warning");
             } else{
+            	// get an array of ids as data
             	var ids = [];
             	$(selectRows).each(function(i, row){
             		ids[i] = row.id;
-            	});
-            	var numbers = [];
-            	$(selectRows).each(function(i, row){
-            		numbers[i] = row.number;
             	});
             	$.messager.confirm("message", "deleting all selected rows, please confirm", function(r){
             		if(r){
             			$.ajax({
 							type: "post",
-							url: "TeacherServlet?method=DeleteTeacher",
-							data: {ids: ids,numbers:numbers},
-							success: function(msg){
-								if(msg == "success"){
-									$.messager.alert("message","删除成功!","info");
-									//刷新表格
+							url: "delete",
+							data: {ids: ids},
+							dataType:'json',
+							success: function(data){
+								if(data.type == "success"){
+									$.messager.alert("message",data.msg,"info");
+									// reload
 									$("#dataList").datagrid("reload");
 									$("#dataList").datagrid("uncheckAll");
 								} else{
-									$.messager.alert("消息提醒","删除失败!","warning");
+									$.messager.alert("message",data.msg,"warning");
 									return;
 								}
 							}

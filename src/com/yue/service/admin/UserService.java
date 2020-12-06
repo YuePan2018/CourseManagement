@@ -14,4 +14,5 @@ public interface UserService {
 	public int getTotal(Map<String, Object> queryMap);
 	public int add(User user);
 	public int edit(User user);
+	public int delete(String str);
 }

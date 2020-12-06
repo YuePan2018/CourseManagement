@@ -40,4 +40,9 @@ public class UserServiceImpl implements UserService {
 		return userDao.edit(user);
 	}
 
+	@Override
+	public int delete(String str) {
+		return userDao.delete(str);
+	}
+
 }

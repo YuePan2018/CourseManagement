@@ -115,7 +115,10 @@ public class UserController {
 		return ret;
 	}
 	
-	/*@RequestMapping(value="/delete",method=RequestMethod.POST)
+	/*
+	 * delete multiple rows
+	 */	
+	@RequestMapping(value="/delete",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, String> delete(
 			@RequestParam(value="ids[]",required=true) Long[] ids
@@ -123,21 +126,22 @@ public class UserController {
 		Map<String, String> ret = new HashMap<String, String>();
 		if(ids == null){
 			ret.put("type", "error");
-			ret.put("msg", "请选择要删除的数据!");
+			ret.put("msg", "invalid input from front-end");
 			return ret;
 		}
 		String idsString = "";
 		for(Long id:ids){
 			idsString += id + ",";
 		}
+		// remove ","
 		idsString = idsString.substring(0,idsString.length()-1);
 		if(userService.delete(idsString) <= 0){
 			ret.put("type", "error");
-			ret.put("msg", "删除失败!");
+			ret.put("msg", "deletion fail");
 			return ret;
 		}
 		ret.put("type", "success");
-		ret.put("msg", "修改成功!");
+		ret.put("msg", "deletion success");
 		return ret;
-	}*/
+	}
 }
