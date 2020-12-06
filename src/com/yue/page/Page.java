@@ -1,16 +1,16 @@
-package com.yue.page.admin;
+package com.yue.page;
 
 import org.springframework.stereotype.Component;
 
 /*
- * Page is used in role page and user page to display pagination 
+ * page is a json parameter from jsp post, it contains page,rows,sort and order
+ * In page entity, I get page and rows from json. Then I calculate offset for SQL row number
  */
 
 @Component
 public class Page {
-	private int page = 1;	// current page number, initiated as 1
+	private int page;
 	private int rows;		// number of rows per page	
-	private int offset;		// used in SQL "limit offset rows"
 	public int getPage() {
 		return page;
 	}
@@ -23,12 +23,11 @@ public class Page {
 	public void setRows(int rows) {
 		this.rows = rows;
 	}
+	/*
+	 *  return offSet 
+	 *  SQL rows as "limit ${offset}, ${rows}"
+	 */
 	public int getOffset() {
-		this.offset = (page - 1) * rows;
-		return offset;
+		return (page - 1) * rows;
 	}
-	public void setOffset(int offset) {
-		this.offset = offset;
-	}
-	
 }

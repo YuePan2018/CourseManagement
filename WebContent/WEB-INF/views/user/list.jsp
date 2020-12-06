@@ -23,13 +23,13 @@
 	        fit: true,		//auto fit size 
 	        method: "post",
 	        // url: use &t and time to avoid browser cachine
-	        url:"get_list&t="+new Date().getTime(),
+	        url:"get_list?t="+new Date().getTime(),
 	        idField:'id', 
 	        singleSelect:false,
 	        pagination:true,
 	        rownumbers:true, 
 	        sortName:'id',
-	        sortOrder:'DESC', 
+	        sortOrder:'asc', 
 	        remoteSort: false,
 	        columns: [[  
 				{field:'chk',checkbox: true,width:50},
@@ -44,7 +44,7 @@
 	    var p = $('#dataList').datagrid('getPager'); 
 	    $(p).pagination({ 
 	        pageSize: 10,	// defaut page size
-	        pageList: [10,20,30,50,100],	//optional page size 
+	        pageList: [5,10,20,30,50],	//optional page size 
 	        beforePageText: 'page', 
 	        afterPageText: ' of {pages}', 
 	        displayMsg: 'current rows from {from} to {to}, total {total} rows', 
@@ -132,7 +132,7 @@
 								dataType:'json',
 								success: function(data){
 									if(data.type == "success"){
-										$.messager.alert("message","add a user successfully","info");
+										$.messager.alert("message",data.msg,"info");
 										$("#addDialog").dialog("close");
 										// empty old form
 										$("#add_username").textbox('setValue', "");
@@ -304,7 +304,14 @@
 				
 				$(table).find(".chooseTr").remove();
 			}
-	    });	    
+	    });
+	  	
+	  	// search function
+	  	$("#search-btn").click(function(){
+	  		$('#dataList').datagrid('reload',{
+	  			username:$("#search-username").textbox('getValue')
+	  		});
+	  	});
 	});
 	</script>
 </head>
@@ -313,13 +320,16 @@
 	<!-- data list -->
 	<table id="dataList" cellspacing="0" cellpadding="0"> 	    
 	</table> 
-	<!-- toolbar -->
+	<!-- toolbar: add, edit, delete, search -->
 	<div id="toolbar">
 		<div style="float: left;"><a id="add" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">add</a></div>
 			<div style="float: left;" class="datagrid-btn-separator"></div>
 		<div style="float: left;"><a id="edit" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">edit</a></div>
 			<div style="float: left;" class="datagrid-btn-separator"></div>
-		<div><a id="delete" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-some-delete',plain:true">delete</a></div>
+		<div style="float: left;"><a id="delete" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-some-delete',plain:true">delete</a></div>
+			<div style="float: left;" class="datagrid-btn-separator"></div>
+		By username：<input id="search-username" class="easyui-textbox" />
+		<a id="search-btn" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">search</a>
 	</div>
 	
 	<!-- form of adding users-->

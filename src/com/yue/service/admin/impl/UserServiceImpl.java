@@ -1,5 +1,8 @@
 package com.yue.service.admin.impl;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,16 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int add(User user) {		
 		return userDao.add(user);
+	}
+
+	@Override
+	public List<User> findList(Map<String, Object> queryMap) {
+		return userDao.findList(queryMap);
+	}
+
+	@Override
+	public int getTotal(Map<String, Object> queryMap) {
+		return userDao.getTotal(queryMap);
 	}
 
 }

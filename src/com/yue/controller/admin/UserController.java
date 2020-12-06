@@ -3,7 +3,6 @@ package com.yue.controller.admin;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.yue.entity.admin.User;
+import com.yue.page.Page;
 import com.yue.service.admin.UserService;
 
 
@@ -30,7 +30,10 @@ public class UserController {
 		return model;
 	}
 	
-	/*// get user list from mysql
+	/*
+	 *  get user list from mysql
+	 *  find list by pagination and pattern search of username 
+	 */
 	@RequestMapping(value="/get_list",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> getList(
@@ -41,12 +44,13 @@ public class UserController {
 		Map<String, Object> queryMap = new HashMap<String, Object>();
 		queryMap.put("username", "%"+username+"%");
 		queryMap.put("offset", page.getOffset());
-		queryMap.put("pageSize", page.getRows());
+		queryMap.put("rows", page.getRows());
 		ret.put("rows", userService.findList(queryMap));
 		ret.put("total", userService.getTotal(queryMap));
 		return ret;
-	}*/
+	}
 	
+	// add a user
 	@RequestMapping(value="/add",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, String> add(User user){
