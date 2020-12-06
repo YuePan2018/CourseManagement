@@ -59,7 +59,7 @@
 	    	table = $("#editTable");
 	    	var selectRows = $("#dataList").datagrid("getSelections");
         	if(selectRows.length != 1){
-            	$.messager.alert("消息提醒", "请选择一条数据进行操作!", "warning");
+            	$.messager.alert("message", "please select one row", "warning");
             } else{
 		    	$("#editDialog").dialog("open");
             }
@@ -68,7 +68,7 @@
 	    	var selectRows = $("#dataList").datagrid("getSelections");
         	var selectLength = selectRows.length;
         	if(selectLength == 0){
-            	$.messager.alert("消息提醒", "请选择数据进行删除!", "warning");
+            	$.messager.alert("message", "please select rows", "warning");
             } else{
             	var ids = [];
             	$(selectRows).each(function(i, row){
@@ -78,7 +78,7 @@
             	$(selectRows).each(function(i, row){
             		numbers[i] = row.number;
             	});
-            	$.messager.confirm("消息提醒", "将删除与user相关的所有数据，确认继续？", function(r){
+            	$.messager.confirm("message", "deleting all selected rows, please confirm", function(r){
             		if(r){
             			$.ajax({
 							type: "post",
@@ -86,7 +86,7 @@
 							data: {ids: ids,numbers:numbers},
 							success: function(msg){
 								if(msg == "success"){
-									$.messager.alert("消息提醒","删除成功!","info");
+									$.messager.alert("message","删除成功!","info");
 									//刷新表格
 									$("#dataList").datagrid("reload");
 									$("#dataList").datagrid("uncheckAll");
@@ -156,11 +156,11 @@
 			}
 	    });
 	  	
-	  	//编辑信息
+	  	// dialog of editing
 	  	$("#editDialog").dialog({
-	  		title: "修改user信息",
-	    	width: 850,
-	    	height: 550,
+	  		title: "edit user",
+	    	width: 350,
+	    	height: 200,
 	    	iconCls: "icon-edit",
 	    	modal: true,
 	    	collapsible: false,
@@ -169,143 +169,48 @@
 	    	draggable: true,
 	    	closed: true,
 	    	buttons: [
-				{
-					text:'设置课程',
-					plain: true,
-					iconCls:'icon-book-add',
-					handler:function(){
-						$("#chooseCourseDialog").dialog("open");
-					}
-				},
 	    		{
-					text:'提交',
+					text:'submit',
 					plain: true,
-					iconCls:'icon-user_add',
+					iconCls:'icon-edit',
 					handler:function(){
 						var validate = $("#editForm").form("validate");
 						if(!validate){
-							$.messager.alert("消息提醒","请检查你输入的数据!","warning");
+							$.messager.alert("message","invalid input","warning");
 							return;
 						} else{
-							var chooseCourse = [];
-							$(table).find(".chooseTr").each(function(){
-								var gradeid = $(this).find("input[textboxname='gradeid']").attr("gradeId");
-								var clazzid = $(this).find("input[textboxname='clazzid']").attr("clazzId");
-								var courseid = $(this).find("input[textboxname='courseid']").attr("courseId");
-								var course = gradeid+"_"+clazzid+"_"+courseid;
-								chooseCourse.push(course);
-							});
-							var id = $("#dataList").datagrid("getSelected").id;
-							var number = $("#edit_number").textbox("getText");
-							var name = $("#edit_name").textbox("getText");
-							var sex = $("#edit_sex").textbox("getText");
-							var phone = $("#edit_phone").textbox("getText");
-							var qq = $("#edit_qq").textbox("getText");
-							var data = {id:id, number:number, name:name,sex:sex,phone:phone,qq:qq,course:chooseCourse};
-							
+							var data = $("#editForm").serialize();
 							$.ajax({
 								type: "post",
-								url: "TeacherServlet?method=EditTeacher",
+								url: "edit",
 								data: data,
-								success: function(msg){
-									if(msg == "success"){
-										$.messager.alert("消息提醒","修改成功!","info");
-										//关闭窗口
-										$("#editDialog").dialog("close");
-										//清空原表格数据
-										$("#edit_number").textbox('setValue', "");
-										$("#edit_name").textbox('setValue', "");
-										$("#edit_sex").textbox('setValue', "男");
-										$("#edit_phone").textbox('setValue', "");
-										$("#edit_qq").textbox('setValue', "");
-										$(table).find(".chooseTr").remove();
-										
-										//重新刷新页面数据
+								dataType:'json',
+								success: function(data){
+									if(data.type == "success"){
+										$.messager.alert("message",data.msg,"info");
+										$("#editDialog").dialog("close");										
+										//reload
 							  			$('#dataList').datagrid("reload");
-							  			$('#dataList').datagrid("uncheckAll");
-										
+							  			$('#dataList').datagrid("uncheckAll");										
 									} else{
-										$.messager.alert("消息提醒","修改失败!","warning");
+										$.messager.alert("message",data.msg,"warning");
 										return;
 									}
 								}
 							});
 						}
 					}
-				},
-				{
-					text:'重置',
-					plain: true,
-					iconCls:'icon-reload',
-					handler:function(){
-						$("#edit_name").textbox('setValue', "");
-						$("#edit_phone").textbox('setValue', "");
-						$("#edit_qq").textbox('setValue', "");
-						
-						$(table).find(".chooseTr").remove();
-						
-					}
-				},
+				}, 				
 			],
+			// load selected username to form before edit 
 			onBeforeOpen: function(){
 				var selectRow = $("#dataList").datagrid("getSelected");
-				//设置值
-				$("#edit_number").textbox('setValue', selectRow.number);
-				$("#edit_name").textbox('setValue', selectRow.name);
-				$("#edit_sex").textbox('setValue', selectRow.sex);
-				$("#edit_phone").textbox('setValue', selectRow.phone);
-				$("#edit_qq").textbox('setValue', selectRow.qq);
-				$("#edit_photo").attr("src", "PhotoServlet?method=GetPhoto&type=3&number="+selectRow.number);
-				
-				var courseList = selectRow.courseList;
-				
-				for(var i = 0;i < courseList.length;i++){
-					var gradeId = courseList[i].grade.id;
-					var gradeName = courseList[i].grade.name;
-					var clazzId = courseList[i].clazz.id;
-					var clazzName = courseList[i].clazz.name;
-					var courseId = courseList[i].course.id;
-					var courseName = courseList[i].course.name;
-					//添加到表格显示
-					var tr = $("<tr class='chooseTr'><td>课程:</td></tr>");
-					
-		    		var gradeTd = $("<td></td>");
-		    		var gradeInput = $("<input style='width: 200px; height: 30px;' data-options='readonly: true' class='easyui-textbox' name='gradeid' />").val(gradeName).attr("gradeId", gradeId);
-		    		$(gradeInput).appendTo(gradeTd);
-		    		$(gradeTd).appendTo(tr);
-		    		
-		    		var clazzTd = $("<td></td>");
-		    		var clazzInput = $("<input style='width: 200px; height: 30px;' data-options='readonly: true' class='easyui-textbox' name='clazzid' />").val(clazzName).attr("clazzId", clazzId);
-		    		$(clazzInput).appendTo(clazzTd);
-		    		$(clazzTd).appendTo(tr);
-		    		
-		    		var courseTd = $("<td></td>");
-		    		var courseInput = $("<input style='width: 200px; height: 30px;' data-options='readonly: true' class='easyui-textbox' name='courseid' />").val(courseName).attr("courseId", courseId);
-		    		$(courseInput).appendTo(courseTd);
-		    		$(courseTd).appendTo(tr);
-		    		
-		    		var removeTd = $("<td></td>");
-		    		var removeA = $("<a href='javascript:;' class='easyui-linkbutton removeBtn'></a>").attr("data-options", "iconCls:'icon-remove'");
-		    		$(removeA).appendTo(removeTd);
-		    		$(removeTd).appendTo(tr);
-		    		
-		    		$(tr).appendTo(table);
-		    		
-		    		//解析
-		    		$.parser.parse($(table).find(".chooseTr :last"));
-					
-				}
-				
+				// load hidden id and username to form before editing				
+				$("#edit-id").val(selectRow.id);
+				$("#edit_username").textbox('setValue', selectRow.username);
+				$("#edit_password").textbox('setValue', selectRow.password);
 			},
-			onClose: function(){
-				$("#edit_name").textbox('setValue', "");
-				$("#edit_phone").textbox('setValue', "");
-				$("#edit_qq").textbox('setValue', "");
-				
-				$(table).find(".chooseTr").remove();
-			}
-	    });
-	  	
+	    });	  	
 	  	// search function
 	  	$("#search-btn").click(function(){
 	  		$('#dataList').datagrid('reload',{
@@ -332,7 +237,7 @@
 		<a id="search-btn" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">search</a>
 	</div>
 	
-	<!-- form of adding users-->
+	<!-- form of adding-->
 	<div id="addDialog" style="padding: 10px;">
    		<form id="addForm" method="post">
 	    	<table id="addTable">
@@ -340,44 +245,33 @@
 	    			<td style="width:40px">username:</td>
 	    			<td>
 	    				<!-- data-options: must be filled or print missing msg -->
-	    				<input id="add_username"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="username" data-options="required:true, validType:'repeat', missingMessage:'Please enter username!'" />
+	    				<input id="add_username"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="username" data-options="required:true, validType:'repeat', missingMessage:'Please enter a username!'" />
 	    			</td>
 	    		</tr>
 	    		<tr>
 	    			<td>password:</td>
-	    			<td><input id="add_password" style="width: 200px; height: 30px;" class="easyui-textbox" type="password" name="password" data-options="required:true, missingMessage:'Please enter password!'" /></td>
+	    			<td><input id="add_password" style="width: 200px; height: 30px;" class="easyui-textbox" type="password" name="password" data-options="required:true, missingMessage:'Please enter a password!'" /></td>
 	    		</tr>
 	    	</table>
 	    </form>
 	</div>
 	
-	<!-- 修改窗口 -->
-	<div id="editDialog" style="padding: 10px">
-		<div style=" position: absolute; margin-left: 560px; width: 250px; height: 300px; border: 1px solid #EEF4FF">
-	    	<img id="edit_photo" alt="照片" style="max-width: 200px; max-height: 400px;" title="照片" src="" />
-	    </div>   
+	<!-- form of edit -->
+	<div id="editDialog" style="padding: 10px">		 
     	<form id="editForm" method="post">
-	    	<table id="editTable" border=0 style="width:800px; table-layout:fixed;" cellpadding="6" >
+    		<!-- get id from selected row but hide it -->
+    		<input type="hidden" name="id" id="edit-id">
+	    	<table id="editTable" >
 	    		<tr>
-	    			<td style="width:40px">工号:</td>
-	    			<td colspan="3"><input id="edit_number" data-options="readonly: true" class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="number" data-options="required:true, validType:'repeat', missingMessage:'请输入工号'" /></td>
-	    			<td style="width:80px"></td>
+	    			<td style="width:40px">username:</td>
+	    			<td>
+	    				<!-- data-options: must be filled or print missing msg -->
+	    				<input id="edit_username"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="username" data-options="required:true, validType:'repeat', missingMessage:'Please enter a username!'" />
+	    			</td>
 	    		</tr>
 	    		<tr>
-	    			<td>姓名:</td>
-	    			<td><input id="edit_name" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="name" data-options="required:true, missingMessage:'请填写姓名'" /></td>
-	    		</tr>
-	    		<tr>
-	    			<td>性别:</td>
-	    			<td><select id="edit_sex" class="easyui-combobox" data-options="editable: false, panelHeight: 50, width: 60, height: 30" name="sex"><option value="男">男</option><option value="女">女</option></select></td>
-	    		</tr>
-	    		<tr>
-	    			<td>电话:</td>
-	    			<td><input id="edit_phone" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="phone" validType="mobile" /></td>
-	    		</tr>
-	    		<tr>
-	    			<td>QQ:</td>
-	    			<td colspan="4"><input id="edit_qq" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="qq" validType="number" /></td>
+	    			<td>password:</td>
+	    			<td><input id="edit_password" style="width: 200px; height: 30px;" class="easyui-textbox" type="password" name="password" data-options="required:true, missingMessage:'Please enter a password!'" /></td>
 	    		</tr>
 	    	</table>
 	    </form>

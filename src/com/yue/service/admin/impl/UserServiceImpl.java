@@ -35,4 +35,9 @@ public class UserServiceImpl implements UserService {
 		return userDao.getTotal(queryMap);
 	}
 
+	@Override
+	public int edit(User user) {
+		return userDao.edit(user);
+	}
+
 }

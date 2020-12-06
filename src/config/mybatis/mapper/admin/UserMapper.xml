@@ -16,4 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="add" parameterType="User">
   		insert into user(id,username,password) values(null,#{username},#{password})
   	</update>
+  	<update id="edit" parameterType="User">
+  		update user set username = #{username},password = #{password} where id = #{id}
+  	</update>
 </mapper>
