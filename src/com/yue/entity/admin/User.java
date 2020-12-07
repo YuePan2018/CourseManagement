@@ -7,6 +7,13 @@ public class User {
 	private Long id;
 	private String username;
 	private String password;
+	private String role;
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
+	}
 	//private String photo;	//address of photo
 	public Long getId() {
 		return id;
