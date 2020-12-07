@@ -67,7 +67,7 @@
 	    ele.className = newClass.replace(/^\s+|\s+$/g, '');
 	  }
 	}
-	// login action
+	// login jquery
 	document.querySelector(".login-button").onclick = function(){
 			var username = $("#username").val();
 			var password = $("#password").val();
@@ -101,6 +101,8 @@
 			});
 			return;
 	}
+	
+	// signup jquery
 	document.querySelector(".signup-button").onclick = function(){
 		var username = $("#username").val();
 		var password = $("#password").val();

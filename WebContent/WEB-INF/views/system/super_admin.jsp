@@ -47,6 +47,8 @@
 
     </script>
 
+
+<!-- 以下内容已更改 -->
 </head>
 <body class="easyui-layout" style="overflow-y: hidden"  scroll="no">
 	<noscript>
@@ -55,27 +57,25 @@
 		</div>
 	</noscript>
     <div region="north" split="true" border="false" style="overflow: hidden; height: 30px;
-        background: url(images/layout-browser-hd-bg.gif) #7f99be repeat-x center 50%;
+        background:  #7f99be;
         line-height: 20px;color: #fff; font-family: Verdana, 微软雅黑,黑体">
-        <span style="float:right; padding-right:20px;" class="head"><span style="color:red; font-weight:bold;">${user.name}&nbsp;</span>您好&nbsp;&nbsp;&nbsp;<a href="SystemServlet?method=LoginOut" id="loginOut">安全退出</a></span>
-        <span style="padding-left:10px; font-size: 16px; ">SWU学生信息管理系统</span>
+        <span style="float:right; padding-right:20px;" class="head"><span style="color:red; font-weight:bold;">${user.username}&nbsp;</span>Hello!&nbsp;&nbsp;&nbsp;<a href="login_out" id="loginOut">Logout</a></span>
+        <span style="padding-left:10px; font-size: 16px; ">Course Information System</span>
     </div>
     <div region="south" split="true" style="height: 30px; background: #D2E0F2; ">
-        <div class="footer">Copyright &copy; SWU By artisan</div>
+        <div class="footer">Copyright &copy; Yue Pan</div>
     </div>
-    <div region="west" hide="true" split="true" title="导航菜单" style="width:180px;" id="west">
+    <div region="west" hide="true" split="true" title="Menu" style="width:180px;" id="west">
 	<div id="nav" class="easyui-accordion" fit="true" border="false">
 		<!--  导航内容 -->
 	</div>
 	
     </div>
-    <div id="WelcomePage" region="center" style="background: #eee; overflow-y:hidden">
+    <div id="mainPanle" region="center" style="background: #eee; overflow-y:hidden">
         <div id="tabs" class="easyui-tabs"  fit="true" border="false" >
 			<jsp:include page="welcome.jsp" />
 		</div>
     </div>
-	
-	<iframe width=0 height=0 src="refresh.jsp"></iframe>
 	
 </body>
 </html>

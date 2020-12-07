@@ -21,6 +21,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	</update>
   	<!-- parameter str contains multiple number, so can't use #{str}; or it will be id in "1,2,3" not "1","2","3"-->
   	<update id="delete" parameterType="String">
-  		delete from user where id in (${str})
+  		delete from user where id in (${value})
   	</update>
 </mapper>
