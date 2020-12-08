@@ -28,9 +28,9 @@ public class SystemController {
 	private UserService userService;
 	
 	// super admin page (from login page)
-	@RequestMapping(value= "/super_admin",method=RequestMethod.GET)
+	@RequestMapping(value= "/index",method=RequestMethod.GET)
 	public ModelAndView superAdmin(ModelAndView model) {
-		model.setViewName("system/super_admin");
+		model.setViewName("system/index");
 		model.addObject("name","data from MyBatis");
 		return model;
 	}
@@ -71,9 +71,8 @@ public class SystemController {
 			ret.put("msg", "wrong password");
 			return ret;
 		}
-		
 		// store login information in session
-		request.getSession().setAttribute("admin", userInDB);	
+		request.getSession().setAttribute("admin", userInDB);
 		// return data to jsp 
 		ret.put("type", "success");
 		ret.put("msg", "login success");
