@@ -14,11 +14,6 @@ import com.yue.service.admin.StudentService;
 public class StudentServiceImpl implements StudentService {
 	@Autowired
 	private StudentDao studentDao;
-	
-	@Override
-	public Student findById(Long id) {
-		return studentDao.findById(id);
-	}
 
 	@Override
 	public int add(Student student) {		

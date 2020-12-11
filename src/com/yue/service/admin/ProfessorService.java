@@ -9,7 +9,6 @@ import com.yue.entity.admin.Professor;
 
 @Service
 public interface ProfessorService {
-	public Professor findById(Long id);
 	public List<Professor> findList(Map<String, Object> queryMap);
 	public int getTotal(Map<String, Object> queryMap);
 	public int add(Professor professor);

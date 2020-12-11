@@ -33,7 +33,7 @@
 						{"menuid":"3","icon":"","menuname":"Course Information",
 							"menus":[
 									{"menuid":"31","menuname":"course list","icon":"icon-exam","url":"../course/list"},
-									{"menuid":"33","menuname":"score list","icon":"icon-exam","url":"../score/list"},
+									{"menuid":"33","menuname":"grade list","icon":"icon-exam","url":"../grade/list"},
 								]
 						},
 				]};

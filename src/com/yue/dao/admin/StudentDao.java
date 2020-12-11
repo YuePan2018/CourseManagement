@@ -9,7 +9,6 @@ import com.yue.entity.admin.Student;
 
 @Repository
 public interface StudentDao {
-	public Student findById(Long id);
 	public List<Student> findList(Map<String, Object> queryMap);
 	public int getTotal(Map<String, Object> queryMap);
 	public int add(Student student);

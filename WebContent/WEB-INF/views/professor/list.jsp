@@ -33,7 +33,7 @@
 	        remoteSort: false,
 	        columns: [[  
 				{field:'chk',checkbox: true,width:50},
- 		        {field:'id',title:'Sid',width:50, sortable: true},   
+ 		        {field:'id',title:'id',width:50, sortable: true},   
  		        {field:'name',title:'name',width:150, sortable: true},
 	 		]], 
 	        toolbar: "#toolbar"
@@ -239,7 +239,7 @@
 	    			<td style="width:40px">name:</td>
 	    			<td>
 	    				<!-- data-options: must be filled or print missing msg -->
-	    				<input id="add_name"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="name" data-options="required:true, validType:'repeat', missingMessage:'Please enter a name!'" />
+	    				<input id="add_name"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="name" data-options="required:true, missingMessage:'Please enter a name!'" />
 	    			</td>
 	    		</tr>
 	    	</table>
@@ -256,7 +256,7 @@
 	    			<td style="width:40px">name:</td>
 	    			<td>
 	    				<!-- data-options: must be filled or print missing msg -->
-	    				<input id="edit_name"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="name" data-options="required:true, validType:'repeat', missingMessage:'Please enter a name!'" />
+	    				<input id="edit_name"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="name" data-options="required:true, missingMessage:'Please enter a name!'" />
 	    			</td>
 	    		</tr>
 	    	</table>

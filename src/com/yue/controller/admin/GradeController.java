@@ -11,63 +11,74 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.yue.entity.admin.Student;
+import com.yue.entity.admin.Grade;
 import com.yue.page.Page;
-import com.yue.service.admin.StudentService;
+import com.yue.service.admin.GradeService;
 
 
-@RequestMapping("/student")
+@RequestMapping("/grade")
 @Controller
-public class StudentController {
+public class GradeController {
 	
 	@Autowired
-	public StudentService studentService;
+	public GradeService gradeService;
 	
 	/*
-	 *  display page
+	 *  display grade page
 	 */
 	@RequestMapping(value="/list",method=RequestMethod.GET)
 	public ModelAndView list(ModelAndView model){
-		model.setViewName("student/list");
+		model.setViewName("grade/list");
 		return model;
 	}
 	
 	/*
-	 *  get list from mysql
-	 *  find list by pagination and pattern search of name 
+	 *  get grade list from mysql
+	 *  find list by pagination and pattern search of gradename 
 	 */
 	@RequestMapping(value="/get_list",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> getList(
-			@RequestParam(value="name",required=false,defaultValue="") String name,
-			Page page
-			){
+	public Map<String, Object> getList(Page page){
 		Map<String, Object> ret = new HashMap<String, Object>();
 		Map<String, Object> queryMap = new HashMap<String, Object>();
-		queryMap.put("name", "%"+name+"%");
 		queryMap.put("offset", page.getOffset());
 		queryMap.put("rows", page.getRows());
-		ret.put("rows", studentService.findList(queryMap));
-		ret.put("total", studentService.getTotal(queryMap));
+		ret.put("rows", gradeService.findList(queryMap));
+		ret.put("total", gradeService.getTotal(queryMap));
 		return ret;
 	}
 	
 	/*
-	 *  add
+	 *  add a grade
 	 */
 	@RequestMapping(value="/add",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String, String> add(Student student){
+	public Map<String, String> add(Grade grade){
 		Map<String, String> ret = new HashMap<String, String>();
-		if(student == null){
+		if(grade == null){
 			ret.put("type", "error");
 			ret.put("msg", "invalid input from front-end");
 			return ret;
 		}
-		// Allow duplicate
-		if(studentService.add(student) <= 0){
+		// check duplicate (cid,sid)
+		Grade existedGrade = gradeService.findByCidAndSid(grade.getCid(), grade.getSid());
+		if(existedGrade != null){
 			ret.put("type", "error");
-			ret.put("msg", "Add Fail: mysql can't find such id, please refresh list");
+			ret.put("msg", "grade exists, please choose another (cid,sid)");
+			return ret;
+		}
+		// catch foreign key exception
+		int num = -1;
+		try {
+			num = gradeService.add(grade);
+		} catch (Exception e) {
+			ret.put("type", "error");
+			ret.put("msg", "Foreign Key Fail: (cid,sid)");
+			return ret;
+		}		
+		if(num <= 0){
+			ret.put("type", "error");
+			ret.put("msg", "mysql adding fail");
 			return ret;
 		}
 		ret.put("type", "success");
@@ -76,20 +87,21 @@ public class StudentController {
 	}
 	
 	/*
-	 *  edit
+	 *  edit a grade
 	 */
 	@RequestMapping(value="/edit",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String, String> edit(Student student){
+	public Map<String, String> edit(Grade grade){
 		Map<String, String> ret = new HashMap<String, String>();
-		if(student == null){
+		if(grade == null){
 			ret.put("type", "error");
 			ret.put("msg", "invalid input from front-end");
 			return ret;
 		}
-		if(studentService.edit(student) <= 0){
+		// no need to check duplicate or exception, because only edit grade.grade
+		if(gradeService.edit(grade) <= 0){
 			ret.put("type", "error");
-			ret.put("msg", "Edit Fail: mysql can't find such id, please refresh list");
+			ret.put("msg", "MySql editing fail: no selected id");
 			return ret;
 		}
 		ret.put("type", "success");
@@ -117,7 +129,7 @@ public class StudentController {
 		}
 		// remove ","
 		idsString = idsString.substring(0,idsString.length()-1);
-		if(studentService.delete(idsString) <= 0){
+		if(gradeService.delete(idsString) <= 0){
 			ret.put("type", "error");
 			ret.put("msg", "deletion fail");
 			return ret;

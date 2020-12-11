@@ -3,7 +3,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>user list</title>
+	<title>grade list</title>
 	<link rel="stylesheet" type="text/css" href="../resources/admin/easyui/themes/default/easyui.css">
 	<link rel="stylesheet" type="text/css" href="../resources/admin/easyui/themes/icon.css">
 	<link rel="stylesheet" type="text/css" href="../resources/admin/easyui/css/demo.css">
@@ -16,7 +16,7 @@
 		
 		// retrieve dataList and display it in datagrid
 	    $('#dataList').datagrid({ 
-	        title:'user list', 
+	        title:'grade list', 
 	        iconCls:'icon-more',
 	        border: true, 
 	        collapsible:false,
@@ -34,9 +34,9 @@
 	        columns: [[  
 				{field:'chk',checkbox: true,width:50},
  		        {field:'id',title:'ID',width:50, sortable: true},   
- 		        {field:'username',title:'username',width:150, sortable: true},
- 		        {field:'password',title:'password',width:100},
- 		    	{field:'role',title:'role',width:150, sortable: true},
+ 		        {field:'cid',title:'cid',width:150, sortable: true},
+ 		    	{field:'sid',title:'sid',width:150, sortable: true},
+ 		    	{field:'grade',title:'grade',width:150, sortable: true},
 	 		]], 
 	        toolbar: "#toolbar"
 	    }); 
@@ -102,7 +102,7 @@
 	    
 	  	// dialog of adding
 	    $("#addDialog").dialog({
-	    	title: "add an user",
+	    	title: "add a grade",
 	    	width: 450,
 	    	height: 200,
 	    	iconCls: "icon-add",
@@ -116,7 +116,7 @@
 	    		{
 					text:'confirm',
 					plain: true,
-					iconCls:'icon-user_add',
+					iconCls:'icon-add',
 					handler:function(){
 						var validate = $("#addForm").form("validate");
 						if(!validate){
@@ -134,8 +134,9 @@
 										$.messager.alert("message",data.msg,"info");
 										$("#addDialog").dialog("close");
 										// empty old form
-										$("#add_username").textbox('setValue', "");
-										$("#add_password").textbox('setValue', "");
+										$("#add_cid").textbox('setValue', "");
+										$("#add_sid").textbox('setValue', "");
+										$("#add_grade").textbox('setValue', "");
 										//reload datagrid
 							  			$('#dataList').datagrid("reload");										
 									} else{
@@ -150,14 +151,15 @@
 			],
 			onClose: function(){
 				// empty form
-				$("#add_username").textbox('setValue', "");
-				$("#add_password").textbox('setValue', "");	
+				$("#add_cid").textbox('setValue', "");
+				$("#add_sid").textbox('setValue', "");
+				$("#add_grade").textbox('setValue', "");
 			}
 	    });
 	  	
 	  	// dialog of editing
 	  	$("#editDialog").dialog({
-	  		title: "edit user",
+	  		title: "edit grade",
 	    	width: 350,
 	    	height: 200,
 	    	iconCls: "icon-edit",
@@ -201,20 +203,17 @@
 					}
 				}, 				
 			],
-			// load selected username to form before edit 
+			// load selected to form before edit 
 			onBeforeOpen: function(){
 				var selectRow = $("#dataList").datagrid("getSelected");
-				// load hidden id and username to form before editing				
+				// load hidden id and grade to form before editing				
 				$("#edit-id").val(selectRow.id);
-				$("#edit_username").textbox('setValue', selectRow.username);
-				$("#edit_password").textbox('setValue', selectRow.password);
+				$("#edit_grade").textbox('setValue', selectRow.grade);
 			},
-	    });	  	
-	  	// search function
+	    });
+	 	// search function
 	  	$("#search-btn").click(function(){
-	  		$('#dataList').datagrid('reload',{
-	  			username:$("#search-username").textbox('getValue')
-	  		});
+	  		$('#dataList').datagrid('reload');
 	  	});
 	});
 	</script>
@@ -232,8 +231,7 @@
 			<div style="float: left;" class="datagrid-btn-separator"></div>
 		<div style="float: left;"><a id="delete" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-some-delete',plain:true">delete</a></div>
 			<div style="float: left;" class="datagrid-btn-separator"></div>
-		By username：<input id="search-username" class="easyui-textbox" />
-		<a id="search-btn" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">search</a>
+		<a id="search-btn" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">reload</a>
 	</div>
 	
 	<!-- form of adding-->
@@ -241,24 +239,19 @@
    		<form id="addForm" method="post">
 	    	<table id="addTable">
 	    		<tr>
-	    			<td style="width:40px">username:</td>
+	    			<td style="width:40px">cid:</td>
 	    			<td>
 	    				<!-- data-options: must be filled or print missing msg -->
-	    				<input id="add_username"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="username" data-options="required:true, validType:'repeat', missingMessage:'Please enter a username!'" />
+	    				<input id="add_cid"  class="easyui-numberbox" style="width: 200px; height: 30px;" type="text" name="cid" data-options="required:true, missingMessage:'Please enter a cid!'" />
 	    			</td>
 	    		</tr>
 	    		<tr>
-	    			<td>password:</td>
-	    			<td><input id="add_password" style="width: 200px; height: 30px;" class="easyui-textbox" type="password" name="password" data-options="required:true, missingMessage:'Please enter a password!'" /></td>
+	    			<td>sid:</td>
+	    			<td><input id="add_sid" style="width: 200px; height: 30px;" class="easyui-numberbox" type="text" name="sid" data-options="required:true, missingMessage:'Please enter a sid!'" /></td>
 	    		</tr>
 	    		<tr>
-	    			<td>role</td>
-	    			<td>
-	    				<select id="add_role"  class="easyui-combobox" style="width: 200px;" name="role" data-options="required:true, missingMessage:'please select a role'">
-	    					<option value="student">student</option>
-	    					<option value="professor">professor</option>
-	    				</select>
-	    			</td>
+	    			<td>grade:</td>
+	    			<td><input id="add_grade" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="grade" data-options="required:true, missingMessage:'Please enter a grade!', validType:'length[1,2]'" /></td>
 	    		</tr>
 	    	</table>
 	    </form>
@@ -271,15 +264,11 @@
     		<input type="hidden" name="id" id="edit-id">
 	    	<table id="editTable" >
 	    		<tr>
-	    			<td style="width:40px">username:</td>
+	    			<td style="width:40px">grade:</td>
 	    			<td>
 	    				<!-- data-options: must be filled or print missing msg -->
-	    				<input id="edit_username"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="username" data-options="required:true, validType:'repeat', missingMessage:'Please enter a username!'" />
+	    				<input id="edit_grade"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="grade" data-options="required:true, missingMessage:'Please enter a grade!', validType:'length[1,2]'" />
 	    			</td>
-	    		</tr>
-	    		<tr>
-	    			<td>password:</td>
-	    			<td><input id="edit_password" style="width: 200px; height: 30px;" class="easyui-textbox" type="password" name="password" data-options="required:true, missingMessage:'Please enter a password!'" /></td>
 	    		</tr>
 	    	</table>
 	    </form>

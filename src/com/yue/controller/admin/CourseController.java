@@ -11,24 +11,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.yue.entity.admin.Student;
+import com.yue.entity.admin.Course;
 import com.yue.page.Page;
-import com.yue.service.admin.StudentService;
+import com.yue.service.admin.CourseService;
 
 
-@RequestMapping("/student")
+@RequestMapping("/course")
 @Controller
-public class StudentController {
+public class CourseController {
 	
 	@Autowired
-	public StudentService studentService;
+	public CourseService courseService;
 	
 	/*
 	 *  display page
 	 */
 	@RequestMapping(value="/list",method=RequestMethod.GET)
 	public ModelAndView list(ModelAndView model){
-		model.setViewName("student/list");
+		model.setViewName("course/list");
 		return model;
 	}
 	
@@ -39,16 +39,16 @@ public class StudentController {
 	@RequestMapping(value="/get_list",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> getList(
-			@RequestParam(value="name",required=false,defaultValue="") String name,
+			@RequestParam(value="title",required=false,defaultValue="") String title,
 			Page page
 			){
 		Map<String, Object> ret = new HashMap<String, Object>();
 		Map<String, Object> queryMap = new HashMap<String, Object>();
-		queryMap.put("name", "%"+name+"%");
+		queryMap.put("title", "%"+title+"%");
 		queryMap.put("offset", page.getOffset());
 		queryMap.put("rows", page.getRows());
-		ret.put("rows", studentService.findList(queryMap));
-		ret.put("total", studentService.getTotal(queryMap));
+		ret.put("rows", courseService.findList(queryMap));
+		ret.put("total", courseService.getTotal(queryMap));
 		return ret;
 	}
 	
@@ -57,15 +57,23 @@ public class StudentController {
 	 */
 	@RequestMapping(value="/add",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String, String> add(Student student){
+	public Map<String, String> add(Course course){
 		Map<String, String> ret = new HashMap<String, String>();
-		if(student == null){
+		if(course == null){
 			ret.put("type", "error");
 			ret.put("msg", "invalid input from front-end");
 			return ret;
 		}
 		// Allow duplicate
-		if(studentService.add(student) <= 0){
+		int num = -1;
+		try {
+			num = courseService.add(course);
+		} catch (Exception e) {
+			ret.put("type", "error");
+			ret.put("msg", "Foreign Key Fail: pid from professor");
+			return ret;
+		}		
+		if(num <= 0){
 			ret.put("type", "error");
 			ret.put("msg", "Add Fail: mysql can't find such id, please refresh list");
 			return ret;
@@ -73,6 +81,7 @@ public class StudentController {
 		ret.put("type", "success");
 		ret.put("msg", "add success");
 		return ret;
+		
 	}
 	
 	/*
@@ -80,14 +89,22 @@ public class StudentController {
 	 */
 	@RequestMapping(value="/edit",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String, String> edit(Student student){
+	public Map<String, String> edit(Course course){
 		Map<String, String> ret = new HashMap<String, String>();
-		if(student == null){
+		if(course == null){
 			ret.put("type", "error");
 			ret.put("msg", "invalid input from front-end");
 			return ret;
 		}
-		if(studentService.edit(student) <= 0){
+		int num = -1;
+		try {
+			num = courseService.edit(course);
+		} catch (Exception e) {
+			ret.put("type", "error");
+			ret.put("msg", "Foreign Key Fail: pid from professor");
+			return ret;
+		}
+		if(num <= 0){
 			ret.put("type", "error");
 			ret.put("msg", "Edit Fail: mysql can't find such id, please refresh list");
 			return ret;
@@ -117,7 +134,7 @@ public class StudentController {
 		}
 		// remove ","
 		idsString = idsString.substring(0,idsString.length()-1);
-		if(studentService.delete(idsString) <= 0){
+		if(courseService.delete(idsString) <= 0){
 			ret.put("type", "error");
 			ret.put("msg", "deletion fail");
 			return ret;

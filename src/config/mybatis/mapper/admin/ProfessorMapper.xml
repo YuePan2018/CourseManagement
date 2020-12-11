@@ -3,9 +3,6 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yue.dao.admin.ProfessorDao">
-	<select id="findById" parameterType="Long" resultType="Professor">
-		select * from professor where id = #{id}
-	</select>
 	<!-- find list by pagination and pattern search of name -->
 	<select id="findList" parameterType="Map" resultType="Professor">
   		select * from professor where name like #{name} limit #{offset},#{rows}

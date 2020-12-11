@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yue.dao.admin.CourseDao">
+	<!-- find list by pagination and pattern search of name -->
+	<select id="findList" parameterType="Map" resultType="Course">
+  		select * from course where title like #{title} limit #{offset},#{rows}
+  	</select>
+  	<select id="getTotal" parameterType="Map" resultType="Integer">
+  		select count(id) from course where title like #{title}
+  	</select>
+	<update id="add" parameterType="Course">
+  		insert into course(id,title,pid) values(null,#{title},#{pid})
+  	</update>
+  	<update id="edit" parameterType="Course">
+  		update course set title = #{title},pid = #{pid} where id = #{id}
+  	</update>
+  	<!-- parameter str contains multiple number, so can't use #{value}; or it will be id in "1,2,3" not "1","2","3"-->
+  	<update id="delete" parameterType="String">
+  		delete from course where id in (${value})
+  	</update>
+</mapper>

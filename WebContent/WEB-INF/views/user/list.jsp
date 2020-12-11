@@ -244,7 +244,7 @@
 	    			<td style="width:40px">username:</td>
 	    			<td>
 	    				<!-- data-options: must be filled or print missing msg -->
-	    				<input id="add_username"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="username" data-options="required:true, validType:'repeat', missingMessage:'Please enter a username!'" />
+	    				<input id="add_username"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="username" data-options="required:true, missingMessage:'Please enter a username!'" />
 	    			</td>
 	    		</tr>
 	    		<tr>
@@ -274,7 +274,7 @@
 	    			<td style="width:40px">username:</td>
 	    			<td>
 	    				<!-- data-options: must be filled or print missing msg -->
-	    				<input id="edit_username"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="username" data-options="required:true, validType:'repeat', missingMessage:'Please enter a username!'" />
+	    				<input id="edit_username"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="username" data-options="required:true, missingMessage:'Please enter a username!'" />
 	    			</td>
 	    		</tr>
 	    		<tr>

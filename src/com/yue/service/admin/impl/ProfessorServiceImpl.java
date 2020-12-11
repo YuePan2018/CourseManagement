@@ -14,12 +14,6 @@ import com.yue.service.admin.ProfessorService;
 public class ProfessorServiceImpl implements ProfessorService {
 	@Autowired
 	private ProfessorDao professorDao;
-	
-	@Override
-	public Professor findById(Long id) {
-		return professorDao.findById(id);
-	}
-
 	@Override
 	public int add(Professor professor) {		
 		return professorDao.add(professor);

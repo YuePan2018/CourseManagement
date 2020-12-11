@@ -67,7 +67,7 @@ public class ProfessorController {
 		// Allow duplicate
 		if(professorService.add(professor) <= 0){
 			ret.put("type", "error");
-			ret.put("msg", "Constraint Fail");
+			ret.put("msg", "Add Fail: mysql can't find such id, please refresh list");
 			return ret;
 		}
 		ret.put("type", "success");
@@ -87,16 +87,9 @@ public class ProfessorController {
 			ret.put("msg", "invalid input from front-end");
 			return ret;
 		}
-		Professor existed = professorService.findById(professor.getId());
-		if(existed == null){
-			ret.put("type", "error");
-			ret.put("msg", "id not exists, please choose another one");
-			return ret;
-					
-		}
 		if(professorService.edit(professor) <= 0){
 			ret.put("type", "error");
-			ret.put("msg", "Constraint Fail");
+			ret.put("msg", "Edit Fail: mysql can't find such id, please refresh list");
 			return ret;
 		}
 		ret.put("type", "success");
