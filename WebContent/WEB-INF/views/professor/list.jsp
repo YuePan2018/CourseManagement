@@ -35,6 +35,7 @@
 				{field:'chk',checkbox: true,width:50},
  		        {field:'id',title:'id',width:50, sortable: true},   
  		        {field:'name',title:'name',width:150, sortable: true},
+ 		       {field:'email',title:'email',width:150},
 	 		]], 
 	        toolbar: "#toolbar"
 	    }); 
@@ -133,6 +134,7 @@
 										$("#addDialog").dialog("close");
 										// empty old form
 										$("#add_name").textbox('setValue', "");
+										$("#add_email").textbox('setValue', "");
 										//reload datagrid
 							  			$('#dataList').datagrid("reload");										
 									} else{
@@ -148,6 +150,7 @@
 			onClose: function(){
 				// empty form
 				$("#add_name").textbox('setValue', "");
+				$("#add_email").textbox('setValue', "");
 			}
 	    });
 	  	
@@ -203,6 +206,7 @@
 				// load hidden id and name to form before editing				
 				$("#edit-id").val(selectRow.id);
 				$("#edit_name").textbox('setValue', selectRow.name);
+				$("#edit_email").textbox('setValue', selectRow.email);
 			},
 	    });	  	
 	  	// search function
@@ -242,6 +246,12 @@
 	    				<input id="add_name"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="name" data-options="required:true, missingMessage:'Please enter a name!'" />
 	    			</td>
 	    		</tr>
+	    		<tr>
+	    			<td style="width:40px">email:</td>
+	    			<td>
+	    				<input id="add_email"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="email" data-options="required:false" />
+	    			</td>
+	    		</tr>
 	    	</table>
 	    </form>
 	</div>
@@ -259,10 +269,14 @@
 	    				<input id="edit_name"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="name" data-options="required:true, missingMessage:'Please enter a name!'" />
 	    			</td>
 	    		</tr>
+	    		<tr>
+	    			<td style="width:40px">name:</td>
+	    			<td>
+	    				<input id="edit_email"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="email" data-options="required:false" />
+	    			</td>
+	    		</tr>
 	    	</table>
 	    </form>
 	</div>
-	
-	
 </body>
 </html>

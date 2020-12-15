@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -12,8 +13,7 @@
 	<script type="text/javascript" src="../resources/admin/easyui/js/validateExtends.js"></script>
 	<script type="text/javascript">
 	$(function() {	
-		var table;
-		
+		var table;		
 		// retrieve dataList and display it in datagrid
 	    $('#dataList').datagrid({ 
 	        title:'student list', 
@@ -35,6 +35,7 @@
 				{field:'chk',checkbox: true,width:50},
  		        {field:'id',title:'id',width:50, sortable: true},   
  		        {field:'name',title:'name',width:150, sortable: true},
+ 		    	{field:'email',title:'email',width:150},
 	 		]], 
 	        toolbar: "#toolbar"
 	    }); 
@@ -133,6 +134,7 @@
 										$("#addDialog").dialog("close");
 										// empty old form
 										$("#add_name").textbox('setValue', "");
+										$("#add_email").textbox('setValue', "");
 										//reload datagrid
 							  			$('#dataList').datagrid("reload");										
 									} else{
@@ -148,6 +150,7 @@
 			onClose: function(){
 				// empty form
 				$("#add_name").textbox('setValue', "");
+				$("#add_email").textbox('setValue', "");
 			}
 	    });
 	  	
@@ -203,6 +206,7 @@
 				// load hidden id and name to form before editing				
 				$("#edit-id").val(selectRow.id);
 				$("#edit_name").textbox('setValue', selectRow.name);
+				$("#edit_email").textbox('setValue', selectRow.email);
 			},
 	    });	  	
 	  	// search function
@@ -221,14 +225,18 @@
 	</table> 
 	<!-- toolbar: add, edit, delete, search -->
 	<div id="toolbar">
+		<c:if test="${admin.role == 'admin'}">
 		<div style="float: left;"><a id="add" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">add</a></div>
 			<div style="float: left;" class="datagrid-btn-separator"></div>
+		</c:if>
 		<div style="float: left;"><a id="edit" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">edit</a></div>
 			<div style="float: left;" class="datagrid-btn-separator"></div>
+		<c:if test="${admin.role == 'admin'}">
 		<div style="float: left;"><a id="delete" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-some-delete',plain:true">delete</a></div>
 			<div style="float: left;" class="datagrid-btn-separator"></div>
 		By name：<input id="search-name" class="easyui-textbox" />
 		<a id="search-btn" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">search</a>
+		</c:if>
 	</div>
 	
 	<!-- form of adding-->
@@ -242,6 +250,12 @@
 	    				<input id="add_name"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="name" data-options="required:true, missingMessage:'Please enter a name!'" />
 	    			</td>
 	    		</tr>
+	    		<tr>
+	    			<td style="width:40px">email:</td>
+	    			<td>	    				
+	    				<input id="add_email"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="email" data-options="required:false" />
+	    			</td>
+	    		</tr>
 	    	</table>
 	    </form>
 	</div>
@@ -252,6 +266,7 @@
     		<!-- get id from selected row but hide it -->
     		<input type="hidden" name="id" id="edit-id">
 	    	<table id="editTable" >
+	    		<c:if test="${admin.role == 'admin'}">
 	    		<tr>
 	    			<td style="width:40px">name:</td>
 	    			<td>
@@ -259,10 +274,15 @@
 	    				<input id="edit_name"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="name" data-options="required:true, missingMessage:'Please enter a name!'" />
 	    			</td>
 	    		</tr>
+	    		</c:if>
+	    		<tr>
+	    			<td style="width:40px">email:</td>
+	    			<td>	    				
+	    				<input id="edit_email"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="email" data-options="required:false" />
+	    			</td>
+	    		</tr>
 	    	</table>
 	    </form>
-	</div>
-	
-	
+	</div>	
 </body>
 </html>

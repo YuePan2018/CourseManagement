@@ -17,16 +17,16 @@
     <script type="text/javascript">
     
 	 var _menus = {"menus":[
-						<c:if test="${admin.role == 'admin'}">
 						{"menuid":"1","icon":"","menuname":"User Management",
 							"menus":[
 									{"menuid":"11","menuname":"user list","icon":"icon-user-teacher","url":"../user/list"}
 								]
 						},
-						</c:if>
 						{"menuid":"2","icon":"","menuname":"Student/Professor",
 							"menus":[
+									<c:if test="${admin.role == 'admin' || admin.role == 'student'}">
 									{"menuid":"21","menuname":"student list","icon":"icon-user-student","url":"../student/list"},
+									</c:if>
 									{"menuid":"22","menuname":"professor list","icon":"icon-user-teacher","url":"../professor/list"},
 								]
 						},

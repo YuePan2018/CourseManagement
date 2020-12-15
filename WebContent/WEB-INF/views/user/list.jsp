@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -37,6 +38,7 @@
  		        {field:'username',title:'username',width:150, sortable: true},
  		        {field:'password',title:'password',width:100},
  		    	{field:'role',title:'role',width:150, sortable: true},
+ 		    	{field:'roleID',title:'roleID',width:150},
 	 		]], 
 	        toolbar: "#toolbar"
 	    }); 
@@ -136,6 +138,7 @@
 										// empty old form
 										$("#add_username").textbox('setValue', "");
 										$("#add_password").textbox('setValue', "");
+										$("#add_roleID").textbox('setValue', "");
 										//reload datagrid
 							  			$('#dataList').datagrid("reload");										
 									} else{
@@ -152,6 +155,7 @@
 				// empty form
 				$("#add_username").textbox('setValue', "");
 				$("#add_password").textbox('setValue', "");	
+				$("#add_roleID").textbox('setValue', "");
 			}
 	    });
 	  	
@@ -208,6 +212,7 @@
 				$("#edit-id").val(selectRow.id);
 				$("#edit_username").textbox('setValue', selectRow.username);
 				$("#edit_password").textbox('setValue', selectRow.password);
+				$("#edit_roleID").textbox('setValue', selectRow.roleID);
 			},
 	    });	  	
 	  	// search function
@@ -226,14 +231,19 @@
 	</table> 
 	<!-- toolbar: add, edit, delete, search -->
 	<div id="toolbar">
+		<!-- only administrator can add, delete and search -->
+		<c:if test="${admin.role == 'admin'}">
 		<div style="float: left;"><a id="add" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">add</a></div>
 			<div style="float: left;" class="datagrid-btn-separator"></div>
+		</c:if>
 		<div style="float: left;"><a id="edit" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">edit</a></div>
 			<div style="float: left;" class="datagrid-btn-separator"></div>
+		<c:if test="${admin.role == 'admin'}">
 		<div style="float: left;"><a id="delete" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-some-delete',plain:true">delete</a></div>
 			<div style="float: left;" class="datagrid-btn-separator"></div>
 		By username：<input id="search-username" class="easyui-textbox" />
 		<a id="search-btn" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">search</a>
+		</c:if>
 	</div>
 	
 	<!-- form of adding-->
@@ -260,6 +270,10 @@
 	    				</select>
 	    			</td>
 	    		</tr>
+	    		<tr>
+	    			<td>roleID:</td>
+	    			<td><input id="add_roleID" style="width: 200px; height: 30px;" class="easyui-numberbox" type="text" name="roleID" data-options="required:false" /></td>
+	    		</tr>
 	    	</table>
 	    </form>
 	</div>
@@ -281,7 +295,19 @@
 	    			<td>password:</td>
 	    			<td><input id="edit_password" style="width: 200px; height: 30px;" class="easyui-textbox" type="password" name="password" data-options="required:true, missingMessage:'Please enter a password!'" /></td>
 	    		</tr>
-	    	</table>
+	    		<c:if test="${admin.role == 'admin'}">
+	    		<tr>
+	    			<td>roleID:</td>
+	    			<td><input id="edit_roleID" style="width: 200px; height: 30px;" class="easyui-numberbox" type="text" name="roleID" data-options="required:false" /></td>
+	    		</tr>
+	    		</c:if>
+	    		<c:if test="${admin.role != 'admin'}">
+	    		<tr>
+	    			<td>roleID:</td>
+	    			<td><input id="edit_roleID" style="width: 200px; height: 30px;" class="easyui-numberbox" type="text" name="roleID" data-options="required:false" readonly="true"/></td>
+	    		</tr>
+	    		</c:if>
+	    	</table>	    	
 	    </form>
 	</div>
 	

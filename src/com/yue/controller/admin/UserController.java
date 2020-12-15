@@ -1,7 +1,11 @@
 package com.yue.controller.admin;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,10 +44,19 @@ public class UserController {
 	@ResponseBody
 	public Map<String, Object> getList(
 			@RequestParam(value="username",required=false,defaultValue="") String username,
+			HttpServletRequest request,
 			Page page
 			){
 		Map<String, Object> ret = new HashMap<String, Object>();
 		Map<String, Object> queryMap = new HashMap<String, Object>();
+		User curUser= (User) request.getSession().getAttribute("admin");
+		// if current user is not administrator, find current user instead of user list 
+		if (!curUser.getRole().equals("admin")) {
+			List<User> list = new ArrayList<>();
+			list.add(userService.findByID(curUser.getId()));
+			ret.put("rows", list);
+			return ret;
+		}
 		queryMap.put("username", "%"+username+"%");
 		queryMap.put("offset", page.getOffset());
 		queryMap.put("rows", page.getRows());

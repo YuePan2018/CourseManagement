@@ -11,10 +11,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   		select count(id) from student where name like #{name}
   	</select>
 	<update id="add" parameterType="Student">
-  		insert into student(id,name) values(null,#{name})
+  		insert into student(id,name,email) values(null,#{name},#{email})
   	</update>
   	<update id="edit" parameterType="Student">
-  		update student set name = #{name} where id = #{id}
+  		update student set name = #{name}, email = #{email} where id = #{id}
   	</update>
   	<!-- parameter str contains multiple number, so can't use #{value}; or it will be id in "1,2,3" not "1","2","3"-->
   	<update id="delete" parameterType="String">

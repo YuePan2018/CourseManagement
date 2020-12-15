@@ -32,11 +32,6 @@
 			<div class="login-button">
 				Login
 			</div>
-			<div align="center" style="position:relative;top:20px"> 
-				<div class="signup-button" >
-					<button>Sign Up</button>
-				</div>
-			</div>
 		</div>
 		<div class="sk-rotating-plane"></div>
 <canvas class="particles-js-canvas-el" width="1147" height="952" style="width: 100%; height: 100%;"></canvas></div>
@@ -100,41 +95,6 @@
 				}
 			});
 			return;
-	}
-	
-	// signup jquery
-	document.querySelector(".signup-button").onclick = function(){
-		var username = $("#username").val();
-		var password = $("#password").val();
-		if(username == '' || username == 'undefined'){
-			alert("please enter username！");
-			return;
-		}
-		if(password == '' || password == 'undefined'){
-			alert("please enter password！");
-			return;
-		}				
-		
-		addClass(document.querySelector(".login"), "active")
-		addClass(document.querySelector(".sk-rotating-plane"), "active")
-		document.querySelector(".login").style.display = "none"
-		$.ajax({
-			url:'login',
-			data:{username:username,password:password},
-			type:'post',
-			dataType:'json',
-			success:function(data){
-				if(data.type == 'success'){
-					window.parent.location = 'welcome';
-				}else{
-					removeClass(document.querySelector(".login"), "active");
-					removeClass(document.querySelector(".sk-rotating-plane"), "active");
-					document.querySelector(".login").style.display = "block";
-					alert(data.msg);
-				}
-			}
-		});
-		return;
 	}
 </script>
 </body></html>

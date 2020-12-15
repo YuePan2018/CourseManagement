@@ -8,13 +8,13 @@ public class User {
 	private String username;
 	private String password;
 	private String role;
+	private Long roleID;
 	public String getRole() {
 		return role;
 	}
 	public void setRole(String role) {
 		this.role = role;
 	}
-	//private String photo;	//address of photo
 	public Long getId() {
 		return id;
 	}
@@ -33,10 +33,10 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	/*public String getPhoto() {
-		return photo;
+	public Long getRoleID() {
+		return roleID;
 	}
-	public void setPhoto(String photo) {
-		this.photo = photo;
-	}*/
+	public void setRoleID(Long roleID) {
+		this.roleID = roleID;
+	}
 }

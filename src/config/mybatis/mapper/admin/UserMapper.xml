@@ -6,6 +6,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="findByUsername" parameterType="String" resultType="User">
 		select * from user where username = #{username}
 	</select>
+	<select id="findByID" resultType="User">
+		select * from user where id = #{id}
+	</select>
 	<!-- find list by pagination and pattern search of username -->
 	<select id="findList" parameterType="Map" resultType="User">
   		select * from user where username like #{username} limit #{offset},#{rows}
@@ -14,10 +17,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   		select count(id) from user where username like #{username}
   	</select>
 	<update id="add" parameterType="User">
-  		insert into user(id,username,password,role) values(null,#{username},#{password},#{role})
+  		insert into user(id,username,password,role,roleID) values(null,#{username},#{password},#{role},#{roleID})
   	</update>
   	<update id="edit" parameterType="User">
-  		update user set username = #{username},password = #{password} where id = #{id}
+  		update user set username = #{username},password = #{password},roleID = #{roleID} where id = #{id}
   	</update>
   	<!-- parameter str contains multiple number, so can't use #{value}; or it will be id in "1,2,3" not "1","2","3"-->
   	<update id="delete" parameterType="String">
