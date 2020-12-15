@@ -36,6 +36,13 @@
 									{"menuid":"33","menuname":"grade list","icon":"icon-exam","url":"../grade/list"},
 								]
 						},
+						<c:if test="${admin.role == 'admin' || admin.role == 'student'}">
+						{"menuid":"4","icon":"","menuname":"Log Management",
+							"menus":[									
+									{"menuid":"41","menuname":"log","icon":"icon-user-teacher","url":"../log/list"},
+								]
+						},
+						</c:if>
 				]};
 
 

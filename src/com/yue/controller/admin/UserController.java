@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.yue.entity.admin.User;
 import com.yue.page.Page;
+import com.yue.service.admin.LogService;
 import com.yue.service.admin.UserService;
 
 
@@ -26,6 +27,9 @@ public class UserController {
 	
 	@Autowired
 	public UserService userService;
+	
+	@Autowired
+	public LogService logService;
 	
 	/*
 	 *  display user page
@@ -70,7 +74,7 @@ public class UserController {
 	 */
 	@RequestMapping(value="/add",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String, String> add(User user){
+	public Map<String, String> add(User user, HttpServletRequest request){
 		Map<String, String> ret = new HashMap<String, String>();
 		if(user == null){
 			ret.put("type", "error");
@@ -90,6 +94,9 @@ public class UserController {
 		}
 		ret.put("type", "success");
 		ret.put("msg", "add a user successfully");
+		// log
+		User curUser= (User) request.getSession().getAttribute("admin");
+		logService.add("{" + curUser.getUsername() + "} adds user {" + user.getUsername() + "}");
 		return ret;
 	}
 	
@@ -98,7 +105,7 @@ public class UserController {
 	 */
 	@RequestMapping(value="/edit",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String, String> edit(User user){
+	public Map<String, String> edit(User user, HttpServletRequest request){
 		Map<String, String> ret = new HashMap<String, String>();
 		if(user == null){
 			ret.put("type", "error");
@@ -125,6 +132,9 @@ public class UserController {
 		}
 		ret.put("type", "success");
 		ret.put("msg", "edit a user successfully!");
+		// log
+		User curUser= (User) request.getSession().getAttribute("admin");
+		logService.add("{" + curUser.getUsername() + "} edits user {" + user.getUsername() + "}");
 		return ret;
 	}
 	
@@ -134,7 +144,8 @@ public class UserController {
 	@RequestMapping(value="/delete",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, String> delete(
-			@RequestParam(value="ids[]",required=true) Long[] ids
+			@RequestParam(value="ids[]",required=true) Long[] ids,
+			HttpServletRequest request
 		){
 		Map<String, String> ret = new HashMap<String, String>();
 		if(ids == null){
@@ -155,6 +166,9 @@ public class UserController {
 		}
 		ret.put("type", "success");
 		ret.put("msg", "deletion success");
+		// log
+		User curUser= (User) request.getSession().getAttribute("admin");
+		logService.add("{" + curUser.getUsername() + "} deletes users");
 		return ret;
 	}
 }
