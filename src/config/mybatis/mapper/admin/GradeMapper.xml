@@ -8,10 +8,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	<!-- find list by pagination and pattern search of name -->
 	<select id="findList" parameterType="Map" resultType="Grade">
-  		select * from grade limit #{offset},#{rows}
+  		select * from grade where sid like #{sid} limit #{offset},#{rows}
   	</select>  	
   	<select id="getTotal" parameterType="Map" resultType="Integer">
-  		select count(id) from grade
+  		select count(id) from grade where sid like #{sid}
   	</select>
 	<update id="add" parameterType="Grade">
   		insert into grade(id,cid,sid,grade) values(null,#{cid},#{sid},#{grade})

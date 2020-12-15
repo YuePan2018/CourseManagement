@@ -22,7 +22,7 @@
 									{"menuid":"11","menuname":"user list","icon":"icon-user-teacher","url":"../user/list"}
 								]
 						},
-						{"menuid":"2","icon":"","menuname":"Student/Professor",
+						{"menuid":"2","icon":"","menuname":"Contact Information",
 							"menus":[
 									<c:if test="${admin.role == 'admin' || admin.role == 'student'}">
 									{"menuid":"21","menuname":"student list","icon":"icon-user-student","url":"../student/list"},

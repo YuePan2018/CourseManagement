@@ -3,6 +3,8 @@ package com.yue.controller.admin;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.yue.entity.admin.Grade;
+import com.yue.entity.admin.User;
 import com.yue.page.Page;
 import com.yue.service.admin.GradeService;
 
@@ -38,9 +41,16 @@ public class GradeController {
 	 */
 	@RequestMapping(value="/get_list",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> getList(Page page){
+	public Map<String, Object> getList(Page page, HttpServletRequest request){
 		Map<String, Object> ret = new HashMap<String, Object>();
 		Map<String, Object> queryMap = new HashMap<String, Object>();
+		// if current user is a student, find grades of current user
+		User curUser= (User) request.getSession().getAttribute("admin");
+		if (curUser.getRole().equals("student")) {
+			queryMap.put("sid", "%"+ curUser.getRoleID() +"%");
+		} else {
+			queryMap.put("sid", "%%");
+		}		
 		queryMap.put("offset", page.getOffset());
 		queryMap.put("rows", page.getRows());
 		ret.put("rows", gradeService.findList(queryMap));
