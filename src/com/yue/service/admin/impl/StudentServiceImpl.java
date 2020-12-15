@@ -40,4 +40,9 @@ public class StudentServiceImpl implements StudentService {
 		return studentDao.delete(str);
 	}
 
+	@Override
+	public Student findByID(Long id) {
+		return studentDao.findByID(id);
+	}
+
 }

@@ -1,7 +1,11 @@
 package com.yue.controller.admin;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.yue.entity.admin.Student;
+import com.yue.entity.admin.User;
 import com.yue.page.Page;
 import com.yue.service.admin.StudentService;
 
@@ -40,10 +45,19 @@ public class StudentController {
 	@ResponseBody
 	public Map<String, Object> getList(
 			@RequestParam(value="name",required=false,defaultValue="") String name,
+			HttpServletRequest request,
 			Page page
 			){
 		Map<String, Object> ret = new HashMap<String, Object>();
 		Map<String, Object> queryMap = new HashMap<String, Object>();
+		User curUser= (User) request.getSession().getAttribute("admin");
+		// if current user is a student, find current student instead of user list 
+		if (curUser.getRole().equals("student")) {
+			List<Student> list = new ArrayList<>();
+			list.add(studentService.findByID(curUser.getRoleID()));
+			ret.put("rows", list);
+			return ret;
+		}
 		queryMap.put("name", "%"+name+"%");
 		queryMap.put("offset", page.getOffset());
 		queryMap.put("rows", page.getRows());

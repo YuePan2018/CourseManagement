@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -225,12 +226,18 @@
 	</table> 
 	<!-- toolbar: add, edit, delete, search -->
 	<div id="toolbar">
-		<div style="float: left;"><a id="add" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">add</a></div>
+		<c:if test="${admin.role == 'admin'}">
+			<div style="float: left;"><a id="add" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">add</a></div>
 			<div style="float: left;" class="datagrid-btn-separator"></div>
-		<div style="float: left;"><a id="edit" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">edit</a></div>
+		</c:if>
+		<c:if test="${admin.role == 'admin' || admin.role == 'professor'}">
+			<div style="float: left;"><a id="edit" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">edit</a></div>
 			<div style="float: left;" class="datagrid-btn-separator"></div>
-		<div style="float: left;"><a id="delete" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-some-delete',plain:true">delete</a></div>
+		</c:if>
+		<c:if test="${admin.role == 'admin'}">
+			<div style="float: left;"><a id="delete" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-some-delete',plain:true">delete</a></div>
 			<div style="float: left;" class="datagrid-btn-separator"></div>
+		</c:if>
 		By name：<input id="search-name" class="easyui-textbox" />
 		<a id="search-btn" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">search</a>
 	</div>
@@ -270,7 +277,7 @@
 	    			</td>
 	    		</tr>
 	    		<tr>
-	    			<td style="width:40px">name:</td>
+	    			<td style="width:40px">email:</td>
 	    			<td>
 	    				<input id="edit_email"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="email" data-options="required:false" />
 	    			</td>

@@ -3,6 +3,8 @@ package com.yue.controller.admin;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.yue.entity.admin.Professor;
+import com.yue.entity.admin.User;
 import com.yue.page.Page;
 import com.yue.service.admin.ProfessorService;
 
@@ -80,11 +83,18 @@ public class ProfessorController {
 	 */
 	@RequestMapping(value="/edit",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String, String> edit(Professor professor){
-		Map<String, String> ret = new HashMap<String, String>();
+	public Map<String, String> edit(Professor professor, HttpServletRequest request){
+		Map<String, String> ret = new HashMap<String, String>();		
 		if(professor == null){
 			ret.put("type", "error");
 			ret.put("msg", "invalid input from front-end");
+			return ret;
+		}
+		// if current user is a professor, can only edit himself
+		User curUser= (User) request.getSession().getAttribute("admin");
+		if (curUser.getRole().equals("professor") && !curUser.getRoleID().equals(professor.getId())) {
+			ret.put("type", "error");
+			ret.put("msg", "you can only edit yourself");
 			return ret;
 		}
 		if(professorService.edit(professor) <= 0){

@@ -266,7 +266,6 @@
     		<!-- get id from selected row but hide it -->
     		<input type="hidden" name="id" id="edit-id">
 	    	<table id="editTable" >
-	    		<c:if test="${admin.role == 'admin'}">
 	    		<tr>
 	    			<td style="width:40px">name:</td>
 	    			<td>
@@ -274,7 +273,6 @@
 	    				<input id="edit_name"  class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="name" data-options="required:true, missingMessage:'Please enter a name!'" />
 	    			</td>
 	    		</tr>
-	    		</c:if>
 	    		<tr>
 	    			<td style="width:40px">email:</td>
 	    			<td>	    				

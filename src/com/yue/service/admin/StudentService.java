@@ -10,6 +10,7 @@ import com.yue.entity.admin.Student;
 @Service
 public interface StudentService {
 	public List<Student> findList(Map<String, Object> queryMap);
+	public Student findByID(Long id);
 	public int getTotal(Map<String, Object> queryMap);
 	public int add(Student student);
 	public int edit(Student student);
