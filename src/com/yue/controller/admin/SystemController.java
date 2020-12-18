@@ -84,7 +84,7 @@ public class SystemController {
 	 */
 	@RequestMapping(value = "/login_out",method=RequestMethod.GET)
 	public String loginOut(HttpServletRequest request){
-		request.getSession().setAttribute("user", null);
+		request.getSession().setAttribute("admin", null);
 		return "redirect:login";
 	}
 }
